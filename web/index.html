@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#121214">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Pi Musik</title>
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="offline" class="banner hidden">Keine Verbindung zum Pi – verbinde neu …</div>
+  <div id="error" class="banner error hidden"></div>
+
+  <main id="view"></main>
+
+  <div id="mini" class="mini hidden">
+    <img id="mini-cover" alt="">
+    <div class="mini-text" id="mini-open">
+      <div id="mini-title" class="ellipsis"></div>
+      <div id="mini-artist" class="ellipsis dim"></div>
+    </div>
+    <button id="mini-toggle" class="icon-btn" aria-label="Play/Pause"></button>
+    <button id="mini-next" class="icon-btn" aria-label="Weiter"></button>
+    <div id="mini-progress"></div>
+  </div>
+
+  <nav class="tabs">
+    <a href="#/now" data-tab="now"><span data-icon="disc"></span>Läuft</a>
+    <a href="#/playlists" data-tab="playlists"><span data-icon="list"></span>Playlists</a>
+    <a href="#/library" data-tab="library"><span data-icon="album"></span>Bibliothek</a>
+    <a href="#/search" data-tab="search"><span data-icon="search"></span>Suche</a>
+    <a href="#/queue" data-tab="queue"><span data-icon="queue"></span>Warteschl.</a>
+  </nav>
+
+  <div id="sheet" class="sheet hidden">
+    <div class="sheet-panel">
+      <div id="sheet-title" class="sheet-title ellipsis"></div>
+      <div id="sheet-actions"></div>
+      <button class="sheet-cancel" id="sheet-cancel">Abbrechen</button>
+    </div>
+  </div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>

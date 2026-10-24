@@ -1,0 +1,25 @@
+# Kopieren nach config.toml und ausfüllen.
+
+[navidrome]
+url = "https://musik.example.com"   # Adresse deines Navidrome-Servers (ohne /rest)
+username = "dein-benutzer"
+password = "dein-passwort"
+# 0 = Originaldatei streamen. Bei schwacher Leitung z.B. 192 -> Navidrome transkodiert auf 192 kbit/s.
+max_bitrate = 0
+transcode_format = "mp3"
+
+[server]
+host = "0.0.0.0"
+port = 80          # auf dem Pi: 80, damit http://musik.local ohne Port funktioniert
+
+[player]
+# "auto" oder ein mpv-Gerät, Liste mit: mpv --audio-device=help
+# 3,5-mm-Klinke am Pi: "alsa/plughw:CARD=Headphones,DEV=0"
+audio_device = "auto"
+mpv = "mpv"
+default_volume = 70
+# Nach einem Neustart des Pi automatisch weiterspielen?
+autoplay = false
+
+[storage]
+data_dir = "data"  # Warteschlange & Position werden hier gespeichert

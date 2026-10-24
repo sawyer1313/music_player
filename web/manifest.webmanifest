@@ -1,0 +1,11 @@
+{
+  "name": "Pi Musik",
+  "short_name": "Pi Musik",
+  "start_url": "/#/now",
+  "display": "standalone",
+  "background_color": "#121214",
+  "theme_color": "#121214",
+  "icons": [
+    { "src": "/static/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

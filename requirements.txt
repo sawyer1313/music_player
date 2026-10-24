@@ -1,0 +1,5 @@
+# Bewusst nur reine Python-Pakete: installieren sich auf dem Pi 2 ohne Kompilieren.
+starlette>=0.37,<1.0
+uvicorn>=0.29,<1.0
+httpx>=0.27,<1.0
+websockets>=12,<16
