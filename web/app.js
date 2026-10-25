@@ -20,6 +20,7 @@ const ICONS = {
   playnext: '<path d="M3 10h11v2H3zm0-4h11v2H3zm0 8h7v2H3zm13-1v8l6-4z"/>',
   addend: '<path d="M14 10H3v2h11v-2zm0-4H3v2h11V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM3 16h7v-2H3v2z"/>',
   person: '<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>',
+  power: '<path d="M13 3h-2v10h2V3zm4.83 2.17-1.42 1.42A6.92 6.92 0 0 1 19 12a7 7 0 1 1-11.42-5.42L6.17 5.17A8.93 8.93 0 0 0 3 12a9 9 0 0 0 18 0c0-2.74-1.23-5.18-3.17-6.83z"/>',
   trash: '<path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>',
 };
 const icon = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
@@ -600,6 +601,22 @@ function queueSheet(i) {
   if (s.albumId) actions.push({ icon: 'album', label: 'Zum Album', run: () => { location.hash = `#/album/${s.albumId}`; } });
   sheet(`${s.title} – ${s.artist}`, actions);
 }
+
+// ---------- Ausschalten ----------
+
+async function powerOff() {
+  try {
+    await api('/system/poweroff', {});
+  } catch (e) {
+    // Bricht die Verbindung ab, weil der Pi schon herunterfährt, ist das kein Fehler
+    if (!(e instanceof TypeError)) return toast(e.message);
+  }
+  $('#offline').textContent = 'Pi ist ausgeschaltet. Zum Einschalten Strom kurz trennen.';
+  toast('Pi fährt herunter …');
+}
+$('#tab-power').onclick = () => sheet('Pi ausschalten? Die Musik stoppt.', [
+  { icon: 'power', label: 'Ausschalten', run: powerOff },
+]);
 
 // ---------- Router ----------
 

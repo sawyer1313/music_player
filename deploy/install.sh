@@ -30,6 +30,13 @@ else
 fi
 sudo usermod -aG audio "$USER_NAME"
 
+echo "==> Ausschalten über die Weboberfläche erlauben"
+SUDOERS_TMP="$(mktemp)"
+echo "$USER_NAME ALL=(root) NOPASSWD: $(command -v systemctl) poweroff" > "$SUDOERS_TMP"
+sudo visudo -cqf "$SUDOERS_TMP"
+sudo install -m 0440 -o root -g root "$SUDOERS_TMP" /etc/sudoers.d/music-player
+rm -f "$SUDOERS_TMP"
+
 echo "==> systemd-Dienst"
 sudo tee /etc/systemd/system/music-player.service >/dev/null <<EOF
 [Unit]

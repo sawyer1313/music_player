@@ -89,6 +89,21 @@ def create_app(cfg: Config) -> Starlette:
             raise HTTPException(400, str(e))
         return JSONResponse({"ok": True})
 
+    # ---------- System ----------
+
+    async def poweroff(request):
+        # Erlaubt über /etc/sudoers.d/music-player (install.sh). systemd beendet danach auch
+        # diesen Dienst sauber, dabei wird die Wiedergabeposition gespeichert.
+        proc = await asyncio.create_subprocess_exec(
+            "sudo", "-n", "systemctl", "poweroff",
+            stdout=asyncio.subprocess.DEVNULL, stderr=asyncio.subprocess.PIPE)
+        _, err = await proc.communicate()
+        if proc.returncode != 0:
+            log.error("Ausschalten fehlgeschlagen: %s", err.decode().strip())
+            raise HTTPException(500, "Ausschalten nicht erlaubt – install.sh erneut ausführen")
+        log.info("Pi wird ausgeschaltet")
+        return JSONResponse({"ok": True})
+
     # ---------- Warteschlange ----------
 
     async def get_queue(request):
@@ -226,6 +241,7 @@ def create_app(cfg: Config) -> Starlette:
         Route("/api/player/volume", volume, methods=["POST"]),
         Route("/api/player/repeat", repeat, methods=["POST"]),
         Route("/api/player/{action}", player_action, methods=["POST"]),
+        Route("/api/system/poweroff", poweroff, methods=["POST"]),
         Route("/api/queue", get_queue),
         Route("/api/queue/play", queue_play, methods=["POST"]),
         Route("/api/queue/add", queue_add, methods=["POST"]),
