@@ -1,5 +1,6 @@
 import argparse
 import logging
+import socket
 
 import uvicorn
 
@@ -18,7 +19,14 @@ def main():
     cfg = load_config(args.config)
     if args.port:
         cfg.port = args.port
-    uvicorn.run(create_app(cfg), host=cfg.host, port=cfg.port, log_level="warning")
+    app = create_app(cfg)
+    if cfg.host == "::":
+        # asyncio setzt bei IPv6 immer IPV6_V6ONLY – eigener Socket, damit IPv4 und IPv6 gehen
+        sock = socket.create_server(("::", cfg.port), family=socket.AF_INET6, dualstack_ipv6=True)
+        server = uvicorn.Server(uvicorn.Config(app, log_level="warning"))
+        server.run(sockets=[sock])
+    else:
+        uvicorn.run(app, host=cfg.host, port=cfg.port, log_level="warning")
 
 
 if __name__ == "__main__":
